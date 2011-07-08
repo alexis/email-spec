@@ -132,7 +132,9 @@ module EmailSpec
       BccTo.new(expected_email_addresses_or_objects_that_respond_to_email.flatten)
     end
 
-    Spec::Matchers.define :have_subject do
+    spec_matchers_module = (Spec::Matchers rescue RSpec::Matchers) # rspec 1 or rspec 2 - both should work
+
+    spec_matchers_module.define :have_subject do
       match do |given|
         given_subject = given.subject
         expected_subject = expected.first
@@ -153,7 +155,7 @@ module EmailSpec
       end
     end
 
-    Spec::Matchers.define :include_email_with_subject do
+   spec_matchers_module.define :include_email_with_subject do
       match do |given_emails|
         expected_subject = expected.first
 
@@ -173,7 +175,7 @@ module EmailSpec
       end
     end
 
-    Spec::Matchers.define :have_body_text do
+    spec_matchers_module.define :have_body_text do
       match do |given|
         expected_text = expected.first
 
@@ -196,7 +198,7 @@ module EmailSpec
       end
     end
 
-    Spec::Matchers.define :have_header do
+    spec_matchers_module.define :have_header do
       match do |given|
         given_header = given.header
         expected_name, expected_value = *expected
